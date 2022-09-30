@@ -22,7 +22,7 @@ afterEvaluate {
 
                 groupId = 'com.kerite.fission'
                 artifactId = 'fission-common'
-                version = '0.1.2'
+                version = rootProject.ext.libraryVersion
             }
         }
     }

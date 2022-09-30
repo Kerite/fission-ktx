@@ -6,11 +6,11 @@ plugins {
 
 android {
     namespace 'com.kerite.fission'
-    compileSdk 33
+    compileSdk 32
 
     defaultConfig {
         minSdk 29
-        targetSdk 33
+        targetSdk 32
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -22,10 +22,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
@@ -52,7 +61,7 @@ afterEvaluate {
 
                 groupId = 'com.kerite.fission'
                 artifactId = 'fission-android'
-                version = '0.1.1'
+                version = rootProject.ext.libraryVersion
             }
         }
     }
