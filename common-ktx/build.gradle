@@ -13,3 +13,17 @@ java {
 dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4'
 }
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.java
+
+                groupId = 'com.kerite.fission'
+                artifactId = 'fission-common'
+                version = '0.1.2'
+            }
+        }
+    }
+}
