@@ -46,5 +46,6 @@ class AnimationProgressBar @JvmOverloads constructor(
                 animator = null
             })
         }
+        animator?.start()
     }
 }
