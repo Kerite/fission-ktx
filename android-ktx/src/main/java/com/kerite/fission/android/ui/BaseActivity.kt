@@ -1,9 +1,10 @@
-package com.kerite.fission.android
+package com.kerite.fission.android.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.kerite.fission.AntiShaker
+import com.kerite.fission.android.ViewBindingInflate
 
 abstract class BaseActivity<VB : ViewBinding>(
     private val inflate: ViewBindingInflate<VB>,
