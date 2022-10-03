@@ -5,7 +5,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.view.animation.LayoutAnimationController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -34,6 +33,7 @@ class SimpleListRecyclerAdapter<VB : ViewBinding, D : Any>(
     @SuppressLint("DiffUtilEquals")
     override fun areContentsTheSame(oldItem: D, newItem: D): Boolean = oldItem == newItem
 }) {
+    private var lastPosition = -1
     private val antiShaker = AntiShaker()
     private val antiShakerProducer: () -> AntiShaker? = {
         if (antiShake) this.antiShaker else null
@@ -77,5 +77,12 @@ class SimpleListRecyclerAdapter<VB : ViewBinding, D : Any>(
     override fun onBindViewHolder(holder: SimpleListItemViewHolder<VB, D>, position: Int) {
         val item = getItem(position)
         holder.bind(item, onItemClickProducer)
+        val animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left)
+        holder.binding.root.startAnimation(animation)
+        lastPosition = holder.adapterPosition
+    }
+
+    override fun onViewDetachedFromWindow(holder: SimpleListItemViewHolder<VB, D>) {
+        holder.binding.root.clearAnimation()
     }
 }
