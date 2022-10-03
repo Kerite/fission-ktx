@@ -83,4 +83,8 @@ class SimpleListRecyclerAdapter<VB : ViewBinding, D : Any>(
             lastPosition = holder.adapterPosition
         }
     }
+
+    override fun onViewDetachedFromWindow(holder: SimpleListItemViewHolder<VB, D>) {
+        holder.binding.root.clearAnimation()
+    }
 }
