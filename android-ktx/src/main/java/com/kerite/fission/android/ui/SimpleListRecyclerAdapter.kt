@@ -15,7 +15,7 @@ class SimpleListRecyclerAdapter<VB : ViewBinding, D : Any>(
     private val context: Context,
     private val itemBindingInflate: ViewBindingInflateWithParent<VB>,
     private val onItemClick: (D) -> Unit,
-    private val onBind: (VB, D) -> Unit
+    private val onBind: VB.(D) -> Unit
 ) : ListAdapter<D, SimpleListRecyclerAdapter.UniversalListItemViewHolder<VB, D>>(
     object : DiffUtil.ItemCallback<D>() {
         override fun areItemsTheSame(oldItem: D, newItem: D): Boolean = oldItem == newItem
@@ -26,7 +26,7 @@ class SimpleListRecyclerAdapter<VB : ViewBinding, D : Any>(
 ) {
     class UniversalListItemViewHolder<VB : ViewBinding, D>(
         private val binding: VB,
-        private val onBind: (VB, D) -> Unit
+        private val onBind: VB.(D) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: D, onClick: (D) -> Unit) {
             binding.apply {
