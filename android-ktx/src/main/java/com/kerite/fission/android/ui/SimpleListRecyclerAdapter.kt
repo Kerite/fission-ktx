@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.view.animation.LayoutAnimationController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -76,11 +77,5 @@ class SimpleListRecyclerAdapter<VB : ViewBinding, D : Any>(
     override fun onBindViewHolder(holder: SimpleListItemViewHolder<VB, D>, position: Int) {
         val item = getItem(position)
         holder.bind(item, onItemClickProducer)
-        val animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left)
-        holder.binding.root.startAnimation(animation)
-    }
-
-    override fun onViewDetachedFromWindow(holder: SimpleListItemViewHolder<VB, D>) {
-        holder.binding.root.clearAnimation()
     }
 }
