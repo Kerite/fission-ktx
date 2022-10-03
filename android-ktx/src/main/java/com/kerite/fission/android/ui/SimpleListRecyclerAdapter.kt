@@ -77,12 +77,17 @@ class SimpleListRecyclerAdapter<VB : ViewBinding, D : Any>(
     override fun onBindViewHolder(holder: SimpleListItemViewHolder<VB, D>, position: Int) {
         val item = getItem(position)
         holder.bind(item, onItemClickProducer)
+    }
+
+    override fun onViewAttachedToWindow(holder: SimpleListItemViewHolder<VB, D>) {
+        super.onViewAttachedToWindow(holder)
         val animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left)
         holder.binding.root.startAnimation(animation)
         lastPosition = holder.adapterPosition
     }
 
     override fun onViewDetachedFromWindow(holder: SimpleListItemViewHolder<VB, D>) {
+        super.onViewDetachedFromWindow(holder)
         holder.binding.root.clearAnimation()
     }
 }
