@@ -81,7 +81,7 @@ class SimpleListRecyclerAdapter<VB : ViewBinding, D : Any>(
 
     override fun onViewAttachedToWindow(holder: SimpleListItemViewHolder<VB, D>) {
         super.onViewAttachedToWindow(holder)
-        val animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left)
+        val animation = AnimationUtils.loadAnimation(context, android.R.anim.fade_in)
         holder.binding.root.startAnimation(animation)
         lastPosition = holder.adapterPosition
     }
