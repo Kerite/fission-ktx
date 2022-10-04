@@ -12,14 +12,27 @@ class AntiShaker(
         val GlobalAntiShaker: AntiShaker = AntiShaker(DEFAULT_ANTI_SHAKE_INTERVAL)
     }
 
-    fun antiShake(action: () -> Unit) {
-        if (latestActionTime == 0L || System.currentTimeMillis() - latestActionTime >= interval) {
-            latestActionTime = System.currentTimeMillis()
-            action()
-        }
+    fun antiShake(action: () -> Unit): ShakingCallback {
+        return ShakingCallback(
+            if (latestActionTime == 0L || System.currentTimeMillis() - latestActionTime >= interval) {
+                latestActionTime = System.currentTimeMillis()
+                action()
+                false
+            } else {
+                true
+            }
+        )
     }
 
     fun resetInterval() {
         latestActionTime = 0
+    }
+
+    inner class ShakingCallback(private val enabled: Boolean) {
+        fun shaking(shakingAction: () -> Unit) {
+            if (enabled) {
+                shakingAction()
+            }
+        }
     }
 }
