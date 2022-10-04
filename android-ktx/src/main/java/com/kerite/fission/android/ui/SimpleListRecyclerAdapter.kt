@@ -2,6 +2,7 @@ package com.kerite.fission.android.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
@@ -28,8 +29,10 @@ class SimpleListRecyclerAdapter<VB : ViewBinding, D : Any>(
     private val onBind: VB.(D) -> Unit,
     var onItemClick: (D) -> Unit = {},
     var antiShake: Boolean = true,
-    @AnimRes private val animRes: Int = android.R.anim.slide_in_left
-) : ListAdapter<D, SimpleListRecyclerAdapter.SimpleListItemViewHolder<VB, D>>(object : DiffUtil.ItemCallback<D>() {
+    @AnimRes private val animRes: Int = android.R.anim.slide_in_left,
+    diffCallback: DiffUtil.ItemCallback<D>? = null
+) : ListAdapter<D, SimpleListRecyclerAdapter.SimpleListItemViewHolder<VB, D>>(diffCallback ?: object :
+    DiffUtil.ItemCallback<D>() {
     override fun areItemsTheSame(oldItem: D, newItem: D): Boolean = oldItem == newItem
 
     @SuppressLint("DiffUtilEquals")
