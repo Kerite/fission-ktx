@@ -7,8 +7,10 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 typealias OnFragmentChangeListener = (@receiver:IdRes Int) -> Unit
 
@@ -21,6 +23,15 @@ class SimpleFragmentViewPagerAdapter(
     private vararg val idToFragmentProducer: Pair<Int, () -> Fragment>,
     var onFragmentChangeListener: OnFragmentChangeListener = {},
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
+    val pageChangeCallback: ViewPager2.OnPageChangeCallback =
+        object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                onFragmentChangeListener(idToFragmentProducer[position].first)
+            }
+        }
+    private var viewPagerGetter: () -> ViewPager2? = { null }
+
+
     constructor(
         fragmentActivity: FragmentActivity,
         vararg idToFragmentProducer: Pair<Int, () -> Fragment>,
@@ -43,13 +54,6 @@ class SimpleFragmentViewPagerAdapter(
         idToFragmentProducer = idToFragmentProducer,
     )
 
-    val pageChangeCallback: ViewPager2.OnPageChangeCallback =
-        object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                onFragmentChangeListener(idToFragmentProducer[position].first)
-            }
-        }
-
     override fun getItemCount(): Int {
         return idToFragmentProducer.size
     }
@@ -69,6 +73,7 @@ class SimpleFragmentViewPagerAdapter(
 
     fun setupViewPager2(viewPager2: ViewPager2) {
         viewPager2.adapter = this
+        viewPagerGetter = { viewPager2 }
         lifecycle.addObserver(object : DefaultLifecycleObserver {
             override fun onResume(owner: LifecycleOwner) {
                 super.onResume(owner)
@@ -80,5 +85,12 @@ class SimpleFragmentViewPagerAdapter(
                 viewPager2.unregisterOnPageChangeCallback(pageChangeCallback)
             }
         })
+    }
+
+    fun setupBottomNavigationView(bottomNavigationView: BottomNavigationView) {
+        bottomNavigationView.setOnItemSelectedListener {
+            viewPagerGetter()?.currentItem = getPosition(it.itemId)
+            true
+        }
     }
 }
